@@ -1,0 +1,5 @@
+{
+ "MongoURI":"mongodb+srv://admin:abcd1234@fitnessappcluster.eriuo.mongodb.net/myFirstDatabase?retryWrites=true&w=majority",
+ "jwtSecret":"jwtSecret"
+    
+}
