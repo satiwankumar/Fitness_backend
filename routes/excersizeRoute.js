@@ -22,7 +22,7 @@ const ExcersizeController = require('../controllers/excersizeController')
 // access Private
 
 
-router.get('/', [auth, admin], ExcersizeController.GET_EXCERSIZES);
+router.get('/', [auth], ExcersizeController.GET_EXCERSIZES);
 
 
 
@@ -32,7 +32,7 @@ router.get('/', [auth, admin], ExcersizeController.GET_EXCERSIZES);
 
 
 // @access   Private
-router.get('/:excersize_id',[auth, admin, checkObjectId('excersize_id')],ExcersizeController.GET_EXCERISZE_DETAIL_BY_ID);
+router.get('/:excersize_id',[auth,  checkObjectId('excersize_id')],ExcersizeController.GET_EXCERISZE_DETAIL_BY_ID);
 
 
 
@@ -41,12 +41,12 @@ router.get('/:excersize_id',[auth, admin, checkObjectId('excersize_id')],Excersi
 // @desc to Add/Register user
 // access public
 
-router.post('/', [
+router.post('/',[auth,admin,
     check('type', 'type is required').not().isEmpty(),
     check('name', 'name is required').not().isEmpty(),
     check('sets', 'sets is required').not().isEmpty(),
     check('reps', 'reps is required').not().isEmpty(),
-    check('tempo', 'temp is required').not().isEmpty(),
+    check('tempo', 'tempo is required').not().isEmpty(),
     check('rest', 'rest is required').not().isEmpty(),
 
 ],

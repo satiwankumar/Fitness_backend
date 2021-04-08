@@ -2,9 +2,21 @@
 const mongoose = require('mongoose');
 const ExcersizeSchema = new mongoose.Schema({
     
+    session_no:{
+        type: String,
+        required:true
+    },
     type: {
         type: String,
         required:true
+    },
+    type_image:{
+        type:String,
+        default:null
+    },
+    image:{
+        type:String,
+        default:null
     },
     name: {
         type: String,

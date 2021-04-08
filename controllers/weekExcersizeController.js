@@ -22,6 +22,13 @@ weekday[4] = "Thursday";
 weekday[5] = "Friday";
 weekday[6] = "Saturday";
 
+excersize = [
+    {"excersize": null},
+    {"excersize": null},
+    {"excersize": null},
+    {"excersize":null}
+ ],
+
 exports.ADD_WEEK_EXCERSIZE = async (req, res, next) => {
 
     try {
@@ -40,12 +47,15 @@ exports.ADD_WEEK_EXCERSIZE = async (req, res, next) => {
             return res.status(400).json({ errors: error }
             )
         }
+        
+       
 
         //create new week Excersize
         weekexcersize = new weekExcersize({
             week: req.body.week,
             day: req.body.day,
             excersize: req.body.excersize,
+            is_off:req.body.is_off,
             user:req.body.user?req.body.user:null
             
         });
@@ -68,7 +78,7 @@ exports.GET_WEEK_EXCERSIZES = async (req, res) => {
     const currentpage = page?parseInt(page,10):1
     const per_page = limit?parseInt(limit,10):5
     const CurrentField = fieldname?fieldname:"createdAt"
-    const currentOrder = order? parseInt(order,10):-1
+    const currentOrder = order? parseInt(order,10):1
     let offset = (currentpage - 1) * per_page;
     const sort = {};
     sort[CurrentField] =currentOrder
@@ -114,7 +124,7 @@ exports.GET_WEEK_EXCERISZE_DETAIL_BY_ID =  async (req, res) => {
     }
 }
 
-exports.GET_WEEK_EXCERCISES_BY_USER_ID = async (req, res) => {
+exports.GET_TODAY_WEEK_EXCERCISES_BY_CURRENT_USER = async (req, res) => {
     
     let user_id = req.user._id
     console.log(req.user.createdAt)
@@ -158,6 +168,9 @@ exports.GET_WEEK_EXCERCISES_BY_USER_ID = async (req, res) => {
     console.log("currentWeek",currentweek)
 
     try {
+
+    
+
       const weekexcersize = await weekExcersize.findOne({
         user: user_id,week:currentweek,day:weekday[currentday].toLowerCase()
       }).populate("excersize.excersize")
@@ -170,19 +183,20 @@ exports.GET_WEEK_EXCERCISES_BY_USER_ID = async (req, res) => {
       return res.status(500).json({ error: err.message });
     }
 }
+exports.GET_ALL_WEEK_EXCERCISES_OF_CURRENT_USER = async (req, res) => {
+    
+    let user_id = req.user._id
+    try {
+      const weekexcersize = await weekExcersize.findOne({
+        user: user_id
+      }).populate("excersize.excersize")
 
-// exports.GET_USER_TODAY_EXCERSIZE = async (req,res) =>{
-//     try {
-//         const weekexcersize = await weekExcersize.find({
-//           user: user_id
-//         })
-  
-//         if (!weekexcersize.length) return res.status(400).json({ message: 'Week Excersize  not found' });
-  
-//         return res.json(weekexcersize);
-//       } catch (err) {
-//         console.error(err.message);
-//         return res.status(500).json({ error: err.message });
-//       }
-// }
+      if (!weekexcersize) return res.status(400).json({ message: 'Week Excersize  not found' });
+
+      return res.json(weekexcersize);
+    } catch (err) {
+      console.error(err.message);
+      return res.status(500).json({ error: err.message });
+    }
+}
 

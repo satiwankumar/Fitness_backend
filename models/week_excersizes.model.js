@@ -29,8 +29,23 @@ const WeekExcersizes = new mongoose.Schema({
     user:{
         type: mongoose.Schema.Types.ObjectId,
         ref: User
+    },
+    isActive:{
+        type:String,
+        default:true
+    },
+    is_completed:{
+        type:Boolean,
+        default:false
+    },
+    is_LeftOver:{
+        type:Boolean,
+        default:false
+    },
+    is_off :{
+        type:Boolean,
+        required:true
     }
-
 });
 WeekExcersizes.set('timestamps', true)
 

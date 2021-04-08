@@ -16,14 +16,17 @@ exports.ADD_EXCERSIZE = async (req, res, next) => {
     try {
         let error = []
         const errors = validationResult(req);
-        const url = baseUrl(req)
+        // const url = baseUrl(req)
+        const {type,name,sets,reps,tempo,rest,session_no} = req.body
+        const {type_image,image} = req.files
+        // console.log(req.files.type_image)
 
         if (!errors.isEmpty()) {
             return res.status(400).json({ errors: errors.array() });
         }
 
         // if excersize duplicated
-        let excersize = await excersizeModel.findOne({ type: req.body.type,name:req.body.name })
+        let excersize = await excersizeModel.findOne({ type: type,name:name,session_no:session_no })
         if (excersize) {
             error.push({ message: "excersize already registered" })
             return res.status(400).json({ errors: error }
@@ -32,15 +35,27 @@ exports.ADD_EXCERSIZE = async (req, res, next) => {
 
         //create new user
         excersize = new excersizeModel({
-            type: req.body.type,
-            name: req.body.name,
-            sets: req.body.sets,
-            reps: req.body.reps,
-            tempo: req.body.tempo,
-            rest: req.body.rest,
+            type: type,
+            name: name,
+            sets: sets,
+            reps: reps,
+            tempo: tempo,
+            rest: rest,
+            session_no:session_no
 
         });
-
+        if(type_image){ 
+            let pathName = `uploads/images/${type_image.originalFilename.replace(/\s/g, '')}`;
+            var stream = fs.readFileSync(type_image.path);
+            await  fs.writeFileSync(path.join(__dirname, `../${pathName}`),stream)
+            excersize.type_image = pathName
+        }
+        if(image){
+            let pathName = `uploads/images/${image.originalFilename.replace(/\s/g, '')}`;
+            var stream = fs.readFileSync(image.path );
+            await  fs.writeFileSync(path.join(__dirname, `../${pathName}`),stream)
+            excersize.image = pathName
+        }
 
 
         await excersize.save()

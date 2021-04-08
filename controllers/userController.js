@@ -70,9 +70,10 @@ exports.Register = async (req, res, next) => {
 
 
         await user.save()
-        let weekExcersizes = await week_excersizesModel.find({user :null},{_id:0,excersize:1,week:1,day:1,user:1})
+        let weekExcersizes = await week_excersizesModel.find({user :null},{_id:0,excersize:1,week:1,day:1,user:1,is_off:1})
          weekExcersizes.forEach((item,index)=> weekExcersizes[index].user = user._id)
-
+        console.log(weekExcersizes)
+    //    return   
         let userWeeks =await week_excersizesModel.insertMany([
             ...weekExcersizes
         ])

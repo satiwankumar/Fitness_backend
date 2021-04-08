@@ -4,7 +4,11 @@ const path  = require('path')
 const port  = process.env.port || 5000
 const connectDB = require('./config/db')
 var cors = require('cors');
+var multipart = require('connect-multiparty');
+
+app.use(multipart());
 require('dotenv').config()
+
 //db connection
 connectDB()
 app.use(function(req, res, next) {

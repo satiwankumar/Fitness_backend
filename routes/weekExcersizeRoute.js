@@ -23,7 +23,16 @@ const WeekExcersizeController = require('../controllers/weekExcersizeController'
 
 
 // @access   Private
-router.get('/me',[auth],WeekExcersizeController.GET_WEEK_EXCERCISES_BY_USER_ID);
+router.get('/me',[auth],WeekExcersizeController.GET_TODAY_WEEK_EXCERCISES_BY_CURRENT_USER);
+
+
+// @route Post api/weekexcersizes/all/me 
+// @desc to get user bid 
+// access private
+
+
+
+router.get('/all/me',[auth],WeekExcersizeController.GET_ALL_WEEK_EXCERCISES_OF_CURRENT_USER);
 
 
 // @route Get api/weekexcersizes (localhost:5000/api/users)
@@ -59,6 +68,23 @@ router.post('/', [
 ],
 WeekExcersizeController.ADD_WEEK_EXCERSIZE
 )
+
+
+
+
+// @route Post api/user/Signup 
+// @desc to Add/Register user
+// access public
+
+// router.get('/getTtodayexcersize', [
+//     check('week', 'week is required').not().isEmpty(),
+//     check('day', 'day is required').not().isEmpty(),
+//     check('excersize', 'excersize is required').isArray(),
+ 
+
+// ],
+// WeekExcersizeController.GET_USER_TODAY_EXCERSIZE
+// )
 
 
 
