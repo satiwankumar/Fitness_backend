@@ -51,10 +51,9 @@ router.get('/:user_id',
 // access public
 
 router.post('/signup', [
-    check('firstname', 'name is required').not().isEmpty(),
+    check('username', 'username is required').not().isEmpty(),
     check('email', 'Email is required').isEmail(),
     check('password', 'please enter a password of 6 or more characters').isLength({ min: 6 }),
-    check('confirmpassword', 'please enter a password of 6 or more characters').isLength({ min: 6 }),
 ],
     UserController.Register
 )
@@ -75,7 +74,7 @@ router.post('/uploadpicture', [auth,
 // @route Post api/users/edit (localhost:5000/api/users/edit)
 // @desc to edit profile  
 // access private
-router.put('/edit', [auth, [check('firstname', 'firstname is required').not().isEmpty(), check('lastname', 'lastname is required').not().isEmpty()],],
+router.put('/edit', [auth, [check('username', 'username is required').not().isEmpty()],],
     UserController.EditProfile
 );
 
@@ -95,8 +94,7 @@ router.post('/edit/:userId',
     auth,
     checkObjectId('userId'),
     [
-        check('firstname', 'firstname is required').not().isEmpty(),
-        check('lastname', 'lastname is required').not().isEmpty()
+        check('username', 'username is required').not().isEmpty()
         
     ],
 ],

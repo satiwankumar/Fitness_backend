@@ -31,10 +31,10 @@ exports.Register = async (req, res, next) => {
         }
 
         //if password doesnot match
-        if (req.body.password !== req.body.confirmpassword) {
-            error.push({ message: "confirm password doesnot match" })
-            return res.status(400).json({ errors: error })
-        }
+        // if (req.body.password !== req.body.confirmpassword) {
+        //     error.push({ message: "confirm password doesnot match" })
+        //     return res.status(400).json({ errors: error })
+        // }
 
 
         //decode the base 4 image 
@@ -55,8 +55,7 @@ exports.Register = async (req, res, next) => {
         }
         //create new user
         user = new User({
-            firstname: req.body.firstname,
-            lastname: req.body.lastname,
+            username: req.body.username,
             email: req.body.email.toLowerCase(),
             image: pathName
 
@@ -157,8 +156,7 @@ exports.EditProfile  =  async (req, res) => {
 
 
     const {
-        firstname,
-        lastname,
+        username,
         city,
         country,
         phone_no,
@@ -179,8 +177,7 @@ exports.EditProfile  =  async (req, res) => {
                 .status(400)
                 .json({ message: 'no  User Found' });
         }
-        user.firstname = firstname
-        user.lastname = lastname,
+        user.username = username
         user.city=city?city:user.city,
         user.country=country?country:user.country,
         user.state=state?state:user.state,
@@ -229,7 +226,7 @@ exports.GetCurrentUser = async (req, res) => {
         // user.AverageRating = Average
        
         res.status(200).json({
-            "user": (_.pick(user, ['_id', 'firstname', 'lastname', 'email', 'image','averageRating','city','country','state','zip_code','address']))
+            "user": (_.pick(user, ['_id', 'username', 'email', 'image','averageRating','city','country','state','zip_code','address']))
 
         })
     } catch (error) {
@@ -350,8 +347,7 @@ exports.Update_User =async (req, res) => {
 
 
     const {
-        firstname,
-        lastname,
+       username,
         city,
         country,
         state,
@@ -372,8 +368,7 @@ exports.Update_User =async (req, res) => {
                 .status(400)
                 .json({ message: 'no  User Found' });
         }
-        user.firstname = firstname
-        user.lastname = lastname,
+        user.username = username
         user.city=city?city:user.city,
         user.country=country?country:user.country,
         user.state=state?state:user.state,
