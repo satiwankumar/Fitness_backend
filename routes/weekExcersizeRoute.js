@@ -12,8 +12,14 @@ const { url } = require('../utils');
 const checkObjectId = require("../middleware/checkobjectId");
 
 //Controller
+
 const WeekExcersizeController = require('../controllers/weekExcersizeController')
 
+
+
+// update excersize status
+// @access   Private
+router.post('/status',[auth,[check('excersize_id', 'excersize_id is required').not().isEmpty(),check('status', 'status is required').not().isEmpty()]],WeekExcersizeController.UPDATE_USER_EXCERSIZE_STATUS);
 
 
 
@@ -24,6 +30,10 @@ const WeekExcersizeController = require('../controllers/weekExcersizeController'
 
 // @access   Private
 router.get('/me',[auth],WeekExcersizeController.GET_TODAY_WEEK_EXCERCISES_BY_CURRENT_USER);
+
+
+// @access   Private
+router.get('/leftover/me',[auth],WeekExcersizeController.GET_ALL_LEFT_OVER_EXCERSIZES);
 
 
 // @route Post api/weekexcersizes/all/me 
@@ -73,9 +83,6 @@ WeekExcersizeController.ADD_WEEK_EXCERSIZE
 
 
 
-// update excersize status
-// @access   Private
-router.get('/status',[auth],WeekExcersizeController.UPDATE_USER_EXCERSIZE_STATUS);
 
 
 

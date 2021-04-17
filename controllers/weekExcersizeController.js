@@ -228,10 +228,116 @@ exports.UPDATE_USER_EXCERSIZE_STATUS =  async (req, res) => {
 
     try {
       const weekexcersize = await weekExcersize.findOne({
-        user: req.user._id,isActive:true
+        user: req.user._id,"excersize._id":excersize_id 
       }).populate("excersize.excersize")
     
+      if (!weekexcersize) return res.status(400).json({ message: 'Week Excersize  not found' });
+      
+       let index = weekexcersize.excersize.findIndex(item=>item._id==excersize_id)
+       weekexcersize.excersize[index].isCompleted=true
+       weekexcersize.save()
+        
+
     //   for(let i=0;i<weekexcersize)
+    
+
+
+      return res.json({message:"Week Excersize Updated Successfully","weekexcersize":weekexcersize });
+    } catch (err) {
+      console.error(err.message);
+      return res.status(500).json({ error: err.message });
+    }
+}
+
+// exports.MARK_ALL_EXERSIZE_COMPLETE =  async (req, res) => {
+    
+//     let {excersize_id,status} = req.body
+
+//     try {
+//       const weekexcersize = await weekExcersize.findOne({
+//         user: req.user._id,"excersize._id":excersize_id 
+//       }).populate("excersize.excersize")
+    
+//       if (!weekexcersize) return res.status(400).json({ message: 'Week Excersize  not found' });
+      
+//        let index = weekexcersize.excersize.findIndex(item=>item._id==excersize_id)
+//        weekexcersize.excersize[index].isCompleted=true
+//        weekexcersize.save()
+        
+
+//     //   for(let i=0;i<weekexcersize)
+    
+
+
+//       return res.json({message:"Week Excersize Updated Successfully","weekexcersize":weekexcersize });
+//     } catch (err) {
+//       console.error(err.message);
+//       return res.status(500).json({ error: err.message });
+//     }
+// }
+
+
+exports.GET_ALL_LEFT_OVER_EXCERSIZES =  async (req, res) => {
+    let user_id = req.user._id
+    console.log(req.user.createdAt)
+    let createdDate  = new Date(req.user.createdAt)
+    let lastDate = moment(createdDate).add(42,'days').format('DD-MM-YYYY')
+    let currentDate = new Date()
+    let currentday = currentDate.getDay()
+
+    currentDate= moment(currentDate)
+   let difference =  currentDate.diff(createdDate,'days')
+    // let createdDate+42/7
+    // console.log()
+  
+
+    let currentweek=0;
+    if(difference>=0 && difference<=7){
+        currentweek=1
+    }
+    else if(difference>=8 && difference<=14){
+        currentweek=2
+    }
+    
+    else if(difference>=15 && difference<=21){
+        currentweek=3
+    }
+    else if(difference>=22 && difference<=28){
+        currentweek=4
+    }
+    else if(difference>=29 && difference<=35){
+        currentweek=5
+    }
+    else if(difference>=36 && difference<=42){
+        currentweek=6
+    }
+    // let day = currentday.toLowerCase
+    console.log(typeof(weekday[currentday].toLowerCase()))
+    console.log("currentWeek",weekday[currentday])
+    console.log("lastDate",lastDate)
+    console.log("difference",difference)
+    console.log("currentDate",currentDate)
+    console.log("currentWeek",currentweek)
+
+    try {
+
+    
+
+      const weekexcersize = await weekExcersize.find({
+        user: user_id,is_completed:false, week:{ $lte: currentweek} 
+      }).populate("excersize.excersize")
+      const url =   baseUrl(req)  
+      console.log(weekexcersize)
+      if (!weekexcersize) return res.status(400).json({ message: 'Week Excersize  not found' });
+      
+    //   for(let i=0;i<weekexcersize.excersize.length;i++){
+    //       if(weekexcersize.excersize[i].excersize!=null){
+    //     weekexcersize.excersize[i].excersize.type_image = `${url}${ weekexcersize.excersize[i].excersize.type_image}`
+    //     weekexcersize.excersize[i].excersize.image = `${url}${ weekexcersize.excersize[i].excersize.image}`
+    // }
+    //   }
+
+
     
 
 
