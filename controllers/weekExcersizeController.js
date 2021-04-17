@@ -242,7 +242,7 @@ exports.UPDATE_USER_EXCERSIZE_STATUS =  async (req, res) => {
     
 
 
-      return res.json({message:"Week Excersize Updated Successfully","weekexcersize":weekexcersize });
+      return res.json(weekexcersize);
     } catch (err) {
       console.error(err.message);
       return res.status(500).json({ error: err.message });
@@ -324,7 +324,7 @@ exports.GET_ALL_LEFT_OVER_EXCERSIZES =  async (req, res) => {
     
 
       const weekexcersize = await weekExcersize.find({
-        user: user_id,is_completed:false, week:{ $lte: currentweek} 
+        user: user_id,is_completed:false
       }).populate("excersize.excersize")
       const url =   baseUrl(req)  
       console.log(weekexcersize)
