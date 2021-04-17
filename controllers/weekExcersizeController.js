@@ -197,21 +197,25 @@ exports.GET_TODAY_WEEK_EXCERCISES_BY_CURRENT_USER = async (req, res) => {
 exports.GET_ALL_WEEK_EXCERCISES_OF_CURRENT_USER = async (req, res) => {
     
     let user_id = req.user._id
+    // let active ="true"
     try {
-      const weekexcersize = await weekExcersize.find({
+      const weekexcersizes = await weekExcersize.find({
         user: user_id
       }).populate("excersize.excersize")
       const url =   baseUrl(req)  
+      console.log(weekexcersizes)
 
-
-      if (!weekexcersize) return res.status(400).json({ message: 'Week Excersize  not found' });
-      for(let i=0;i<weekexcersize.excersize.length;i++){
-        weekexcersize.excersize[i].excersize.type_image = `${url}${ weekexcersize.excersize[i].excersize.type_image}`
-        weekexcersize.excersize[i].excersize.image = `${url}${ weekexcersize.excersize[i].excersize.image}`
-
+      if (!weekexcersizes) return res.status(400).json({ message: 'Week Excersize  not found' });
+      for(let i=0;i<weekexcersizes.length;i++){
+        for(let j=0;j<weekexcersizes[i].excersize.length;j++){          
+            if(weekexcersizes[i].excersize[j].excersize!=null){
+        weekexcersizes[i].excersize[j].excersize.type_image = `${url}${ weekexcersizes[i].excersize[j].excersize.type_image}`
+        weekexcersizes[i].excersize[j].excersize.image = `${url}${ weekexcersizes[i].excersize[j].excersize.image}`
+            }
+    }
       }
 
-      return res.json(weekexcersize);
+      return res.json(weekexcersizes);
     } catch (err) {
       console.error(err.message);
       return res.status(500).json({ error: err.message });
