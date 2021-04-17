@@ -174,8 +174,19 @@ exports.GET_TODAY_WEEK_EXCERCISES_BY_CURRENT_USER = async (req, res) => {
       const weekexcersize = await weekExcersize.findOne({
         user: user_id,week:currentweek,day:weekday[currentday].toLowerCase()
       }).populate("excersize.excersize")
+      const url =   baseUrl(req)  
+      
+      for(let i=0;i<weekexcersize.excersize.length;i++){
+          if(weekexcersize.excersize[i].excersize!=null){
+        weekexcersize.excersize[i].excersize.type_image = `${url}${ weekexcersize.excersize[i].excersize.type_image}`
+        weekexcersize.excersize[i].excersize.image = `${url}${ weekexcersize.excersize[i].excersize.image}`
+    }
+      }
+
 
       if (!weekexcersize) return res.status(400).json({ message: 'Week Excersize  not found' });
+    
+
 
       return res.json(weekexcersize);
     } catch (err) {
@@ -187,11 +198,18 @@ exports.GET_ALL_WEEK_EXCERCISES_OF_CURRENT_USER = async (req, res) => {
     
     let user_id = req.user._id
     try {
-      const weekexcersize = await weekExcersize.findOne({
+      const weekexcersize = await weekExcersize.find({
         user: user_id
       }).populate("excersize.excersize")
+      const url =   baseUrl(req)  
+
 
       if (!weekexcersize) return res.status(400).json({ message: 'Week Excersize  not found' });
+      for(let i=0;i<weekexcersize.excersize.length;i++){
+        weekexcersize.excersize[i].excersize.type_image = `${url}${ weekexcersize.excersize[i].excersize.type_image}`
+        weekexcersize.excersize[i].excersize.image = `${url}${ weekexcersize.excersize[i].excersize.image}`
+
+      }
 
       return res.json(weekexcersize);
     } catch (err) {
@@ -200,3 +218,22 @@ exports.GET_ALL_WEEK_EXCERCISES_OF_CURRENT_USER = async (req, res) => {
     }
 }
 
+exports.UPDATE_USER_EXCERSIZE_STATUS =  async (req, res) => {
+    
+    let {excersize_id,status} = req.body
+
+    try {
+      const weekexcersize = await weekExcersize.findOne({
+        user: req.user._id,isActive:true
+      }).populate("excersize.excersize")
+    
+    //   for(let i=0;i<weekexcersize)
+    
+
+
+      return res.json(weekexcersize);
+    } catch (err) {
+      console.error(err.message);
+      return res.status(500).json({ error: err.message });
+    }
+}

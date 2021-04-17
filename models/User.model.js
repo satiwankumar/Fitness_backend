@@ -82,7 +82,7 @@ UserSchema.set('timestamps', true)
 UserSchema.methods.generateAuthToken = function () {
     const token = jwt.sign({
         _id: this._id, isAdmin: this.isAdmin ,status:this.status,createdAt:this.createdAt
-     },config.get('jwtSecret'),{expiresIn :  '24h' });
+     },config.get('jwtSecret'));
     return token;
 }
 

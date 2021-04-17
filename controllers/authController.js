@@ -72,8 +72,8 @@ exports.Login = async (req, res) => {
 
                 //create new user
                 user = new User({
-                    firstname: Googleuser.data.given_name,
-                    lastname: Googleuser.data.family_name,
+                    username: Googleuser.data.given_name +" "+ Googleuser.data.family_name,
+    
                     email: Googleuser.data.email,
                     image: pathName,
                     googleId: Googleuser.data.id,

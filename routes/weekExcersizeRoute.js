@@ -32,6 +32,8 @@ router.get('/me',[auth],WeekExcersizeController.GET_TODAY_WEEK_EXCERCISES_BY_CUR
 
 
 
+
+
 router.get('/all/me',[auth],WeekExcersizeController.GET_ALL_WEEK_EXCERCISES_OF_CURRENT_USER);
 
 
@@ -71,21 +73,9 @@ WeekExcersizeController.ADD_WEEK_EXCERSIZE
 
 
 
-
-// @route Post api/user/Signup 
-// @desc to Add/Register user
-// access public
-
-// router.get('/getTtodayexcersize', [
-//     check('week', 'week is required').not().isEmpty(),
-//     check('day', 'day is required').not().isEmpty(),
-//     check('excersize', 'excersize is required').isArray(),
- 
-
-// ],
-// WeekExcersizeController.GET_USER_TODAY_EXCERSIZE
-// )
-
+// update excersize status
+// @access   Private
+router.get('/status',[auth],WeekExcersizeController.UPDATE_USER_EXCERSIZE_STATUS);
 
 
 
