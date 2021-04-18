@@ -25,6 +25,16 @@ router.post("/status",
   ],
   WeekExcersizeController.UPDATE_USER_EXCERSIZE_STATUS
 );
+// update mark week_excersize status
+// @access   Private
+router.post("/complete",
+  [
+    auth,
+    check("week_excersize_id", "week_excersize_id is required").not().isEmpty(),
+    check("status", "status is required").not().isEmpty(),
+  ],
+  WeekExcersizeController.MARK_WEEK_EXCERSIZE_COMPLETE
+);
 
 // @route Post api/weekexcersizes/me
 // @desc to get user bid
