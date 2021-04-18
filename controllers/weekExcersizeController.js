@@ -93,12 +93,12 @@ exports.GET_ALL_LEFT_OVER_EXCERSIZES =  async (req, res) => {
     //   console.log(weekexcersize)
       if (!weekexcersize.length) return res.status(400).json({ message: 'Week Excersize  not found' });
       
-    //   for(let i=0;i<weekexcersize.excersize.length;i++){
-    //       if(weekexcersize.excersize[i].excersize!=null){
-    //     weekexcersize.excersize[i].excersize.type_image = `${url}${ weekexcersize.excersize[i].excersize.type_image}`
-    //     weekexcersize.excersize[i].excersize.image = `${url}${ weekexcersize.excersize[i].excersize.image}`
-    // }
-    //   }
+      for(let i=0;i<weekexcersize.excersize.length;i++){
+          if(weekexcersize.excersize[i].excersize!=null){
+        weekexcersize.excersize[i].excersize.type_image = `${url}${ weekexcersize.excersize[i].excersize.type_image}`
+        weekexcersize.excersize[i].excersize.image = `${url}${ weekexcersize.excersize[i].excersize.image}`
+    }
+      }
 
 
     
@@ -354,12 +354,12 @@ exports.MARK_WEEK_EXCERSIZE_COMPLETE =  async (req, res) => {
     //    weekexcersize.excersize[index].isCompleted=status
     //    weekexcersize.save()
         
-//        for(let i=0;i<weekexcersize.excersize.length;i++){
-//         if(weekexcersize.excersize[i].excersize!=null){
-//       weekexcersize.excersize[i].excersize.type_image = `${url}${ weekexcersize.excersize[i].excersize.type_image}`
-//       weekexcersize.excersize[i].excersize.image = `${url}${ weekexcersize.excersize[i].excersize.image}`
-//   }
-//     }
+       for(let i=0;i<weekexcersize.excersize.length;i++){
+        if(weekexcersize.excersize[i].excersize!=null){
+      weekexcersize.excersize[i].excersize.type_image = `${url}${ weekexcersize.excersize[i].excersize.type_image}`
+      weekexcersize.excersize[i].excersize.image = `${url}${ weekexcersize.excersize[i].excersize.image}`
+  }
+    }
 // console.log(weekexcersize)
    
 
