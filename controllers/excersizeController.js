@@ -100,9 +100,10 @@ exports.GET_EXCERSIZES = async (req, res) => {
                 .json({ message: 'no excersize exist' });
         }
         const url =   baseUrl(req)  
-        excersizes.forEach(user=>
-           user.image = `${url}${user.image}`
-            )
+        // excersizes.forEach(user=>
+        //    user.image = `${url}${user.image}`
+        
+        //     )
             let Totalcount = await User.find({status:currentSelection}).count()
             const paginate = {
             currentPage: currentpage,

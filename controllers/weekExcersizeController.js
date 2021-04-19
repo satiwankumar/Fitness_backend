@@ -78,25 +78,22 @@ exports.GET_ALL_LEFT_OVER_EXCERSIZES =  async (req, res) => {
     
 
       const weekexcersize = await weekExcersize.find({
-    
         user: user_id, 
-        // createdAt: {
-        //     $gte: moment(createdDate).startOf("day").toDate(),
-        //     $lte: moment(currentDate).endOf("day").toDate(),
-        //   },
         week:{$lte :currentweek},
           is_completed:{$ne: true},
           is_off:{$ne: true}
       }).populate("excersize.excersize").sort({createdAt:1})
       const url =   baseUrl(req)  
       
-    //   console.log(weekexcersize)
+
       if (!weekexcersize.length) return res.status(400).json({ message: 'Week Excersize  not found' });
       
-      for(let i=0;i<weekexcersize.excersize.length;i++){
-          if(weekexcersize.excersize[i].excersize!=null){
-        weekexcersize.excersize[i].excersize.type_image = `${url}${ weekexcersize.excersize[i].excersize.type_image}`
-        weekexcersize.excersize[i].excersize.image = `${url}${ weekexcersize.excersize[i].excersize.image}`
+      for(let i=0;i<weekexcersize.length;i++){
+        for(let j=0;j<weekexcersize[i].excersize.length;j++){          
+            if(weekexcersize[i].excersize[j].excersize!=null){
+        weekexcersize[i].excersize[j].excersize.type_image = `${url}${ weekexcersize[i].excersize[j].excersize.type_image}`
+        weekexcersize[i].excersize[j].excersize.image = `${url}${ weekexcersize[i].excersize[j].excersize.image}`
+            }
     }
       }
 

@@ -11,8 +11,12 @@ const admin = require('../middleware/adminMiddleware')
 const { url } = require('../utils');
 const checkObjectId = require("../middleware/checkobjectId");
 
+
 //Controller
-const ExcersizeController = require('../controllers/excersizeController')
+const ExcersizeController = require('../controllers/excersizeController');
+const excersizeModel = require("../models/excersize.model");
+
+
 
 
 
@@ -53,6 +57,26 @@ router.post('/',[auth,admin,
 ExcersizeController.ADD_EXCERSIZE
 )
 
+
+
+//update
+router.post('/update', async (req, res) => {
+  
+    try {
+   
+        let excersize = await excersizeModel.updateMany(
+            {rest:"60 sec"},
+            [{
+                $set: {rest:"60"}
+            }]
+          )
+        
+
+        res.status(200).json(excersize)
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
 
 
 module.exports = router
