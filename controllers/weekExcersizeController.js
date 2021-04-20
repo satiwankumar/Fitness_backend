@@ -324,7 +324,8 @@ console.log("currentWeek",currentweek)
       const weekexcersizes = await weekExcersize.find({
        ...weekfilter,
        week:{$lte:currentweek},
-        user: user_id
+        user: user_id,
+        is_off:false
       }).populate("excersize.excersize").sort({createdAt:1})
       const url =   baseUrl(req)  
       // console.log(weekexcersizes)
