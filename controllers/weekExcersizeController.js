@@ -12,6 +12,7 @@ const config = require('config')
 const User = require('../models/User.model');
 const weekExcersize = require("../models/week_excersizes.model");
 var moment = require('moment');
+const { report } = require("../routes/excersizeRoute");
 
 var weekday = new Array(7);
 weekday[0] = "Sunday";
@@ -186,7 +187,6 @@ exports.GET_WEEK_EXCERSIZES = async (req, res) => {
     }
 }
 
-
 exports.GET_WEEK_EXCERISZE_DETAIL_BY_ID =  async (req, res) => {
     let  weekexcersize_id = req.params.weekexcersize_id
     try {
@@ -275,14 +275,19 @@ exports.GET_TODAY_WEEK_EXCERCISES_BY_CURRENT_USER = async (req, res) => {
 }
 exports.GET_ALL_WEEK_EXCERCISES_OF_CURRENT_USER = async (req, res) => {
     
+let {week}= req.query 
+
+
     let user_id = req.user._id
     // let active ="true"
+    let weekfilter = week? {week: week}:{}
     try {
       const weekexcersizes = await weekExcersize.find({
+       ...weekfilter,
         user: user_id
-      }).populate("excersize.excersize")
+      }).populate("excersize.excersize").sort({createdAt:1})
       const url =   baseUrl(req)  
-      console.log(weekexcersizes)
+      // console.log(weekexcersizes)
 
       if (!weekexcersizes) return res.status(400).json({ message: 'Week Excersize  not found' });
       for(let i=0;i<weekexcersizes.length;i++){
