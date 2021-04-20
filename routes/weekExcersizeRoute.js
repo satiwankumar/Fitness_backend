@@ -36,6 +36,17 @@ router.post("/complete",
   WeekExcersizeController.MARK_WEEK_EXCERSIZE_COMPLETE
 );
 
+
+
+
+
+//get basic plan
+router.get(
+  "/plan",
+  [auth,admin],
+  WeekExcersizeController.GET_BASIC_PLAN
+);
+
 // @route Post api/weekexcersizes/me
 // @desc to get user bid
 // access private
@@ -94,5 +105,13 @@ router.post(
   ],
   WeekExcersizeController.ADD_WEEK_EXCERSIZE
 );
+
+
+
+
+
+
+
+
 
 module.exports = router;

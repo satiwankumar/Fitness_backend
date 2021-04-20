@@ -374,6 +374,82 @@ exports.MARK_WEEK_EXCERSIZE_COMPLETE =  async (req, res) => {
 }
 
 
+exports.GET_BASIC_PLAN = async (req, res) => {
+    
+      try {
+        let weekexcersizes = await weekExcersize.find({user :null}).populate("excersize.excersize").sort({createdAt:1})
+        const url =   baseUrl(req)  
+        // console.log(weekexcersizes)
+  
+        if (!weekexcersizes) return res.status(400).json({ message: 'Week Excersize  not found' });
+        for(let i=0;i<weekexcersizes.length;i++){
+          for(let j=0;j<weekexcersizes[i].excersize.length;j++){          
+              if(weekexcersizes[i].excersize[j].excersize!=null){
+          weekexcersizes[i].excersize[j].excersize.type_image = `${url}${ weekexcersizes[i].excersize[j].excersize.type_image}`
+          weekexcersizes[i].excersize[j].excersize.image = `${url}${ weekexcersizes[i].excersize[j].excersize.image}`
+        }
+      }
+        }
+  
+        return res.json(weekexcersizes);
+      } catch (err) {
+        console.error(err.message);
+        return res.status(500).json({ error: err.message });
+      }
+  }
+
+
+  
+exports.UPDATE_PLAN =async (req, res) => {
+
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+      res.status(400).json({ errors: errors.array() });
+  }
+
+
+  const {
+    username,
+    city,
+    country,
+    state,
+    zip_code,
+    address ,
+    phone_no
+
+  } = req.body;
+
+
+  try {
+
+    let weekexcersizes = await weekExcersize.findOne({_id:req.user._id}).populate("excersize.excersize").sort({createdAt:1})
+
+      // console.log(user)
+      if (!user) {
+          return res
+              .status(400)
+              .json({ message: 'no  plan Found' });
+      }
+      // user.username = username
+
+          // await user.save();
+      const url =   baseUrl(req)  
+      user.image = `${url}${user.image}`
+      const resuser = user
+      res.status(200).json({
+          message: "User Profile Updated Successfully",
+          user: resuser
+      });
+  } catch (err) {
+    
+     
+          const errors =[]
+          errors.push({message : err.message}) 
+          res.status(500).json({ errors: errors });
+      
+  }
+}
+
 
 
 
