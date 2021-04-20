@@ -276,14 +276,54 @@ exports.GET_TODAY_WEEK_EXCERCISES_BY_CURRENT_USER = async (req, res) => {
 exports.GET_ALL_WEEK_EXCERCISES_OF_CURRENT_USER = async (req, res) => {
     
 let {week}= req.query 
+let user_id = req.user._id
+console.log(req.user.createdAt)
+let createdDate  = new Date(req.user.createdAt)
+let lastDate = moment(createdDate).add(42,'days').format('DD-MM-YYYY')
+let currentDate = new Date()
+let currentday = currentDate.getDay()
+
+currentDate= moment(currentDate)
+let difference =  currentDate.diff(createdDate,'days')
+// let createdDate+42/7
+// console.log()
 
 
-    let user_id = req.user._id
+let currentweek=0;
+if(difference>=0 && difference<=7){
+    currentweek=1
+}
+else if(difference>=8 && difference<=14){
+    currentweek=2
+}
+
+else if(difference>=15 && difference<=21){
+    currentweek=3
+}
+else if(difference>=22 && difference<=28){
+    currentweek=4
+}
+else if(difference>=29 && difference<=35){
+    currentweek=5
+}
+else if(difference>=36 && difference<=42){
+    currentweek=6
+}
+// let day = currentday.toLowerCase
+console.log(typeof(weekday[currentday].toLowerCase()))
+console.log("currentWeek",weekday[currentday])
+console.log("lastDate",lastDate)
+console.log("difference",difference)
+console.log("currentDate",currentDate)
+console.log("currentWeek",currentweek)
+
+    
     // let active ="true"
     let weekfilter = week? {week: week}:{}
     try {
       const weekexcersizes = await weekExcersize.find({
        ...weekfilter,
+       week:{$lte:currentweek},
         user: user_id
       }).populate("excersize.excersize").sort({createdAt:1})
       const url =   baseUrl(req)  
@@ -380,6 +420,8 @@ exports.GET_BASIC_PLAN = async (req, res) => {
         let weekexcersizes = await weekExcersize.find({user :null}).populate("excersize.excersize").sort({createdAt:1})
         const url =   baseUrl(req)  
         // console.log(weekexcersizes)
+        let weekexcersizesCount = await weekExcersize.find({user :null})
+
   
         if (!weekexcersizes) return res.status(400).json({ message: 'Week Excersize  not found' });
         for(let i=0;i<weekexcersizes.length;i++){
@@ -391,7 +433,7 @@ exports.GET_BASIC_PLAN = async (req, res) => {
       }
         }
   
-        return res.json(weekexcersizes);
+        return res.json(weekexcersizesCount);
       } catch (err) {
         console.error(err.message);
         return res.status(500).json({ error: err.message });
