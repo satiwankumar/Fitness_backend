@@ -15,6 +15,20 @@ const checkObjectId = require("../middleware/checkobjectId");
 
 const WeekExcersizeController = require("../controllers/weekExcersizeController");
 
+
+
+
+
+
+router.post("/planupdate",[auth], WeekExcersizeController.UPDATE_PLAN);
+
+
+
+
+
+
+
+
 // update excersize status
 // @access   Private
 router.post("/status",
@@ -46,6 +60,10 @@ router.get(
   [auth,admin],
   WeekExcersizeController.GET_BASIC_PLAN
 );
+
+//updateBasicPlan
+
+
 
 // @route Post api/weekexcersizes/me
 // @desc to get user bid

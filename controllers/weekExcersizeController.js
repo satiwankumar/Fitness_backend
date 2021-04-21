@@ -13,6 +13,7 @@ const User = require('../models/User.model');
 const weekExcersize = require("../models/week_excersizes.model");
 var moment = require('moment');
 const { report } = require("../routes/excersizeRoute");
+const excersizeModel = require("../models/excersize.model");
 
 var weekday = new Array(7);
 weekday[0] = "Sunday";
@@ -30,6 +31,64 @@ excersize = [
     {"excersize":null}
  ],
 
+
+ exports.UPDATE_PLAN =async (req, res) => {
+
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+      res.status(400).json({ errors: errors.array() });
+  }
+
+const {week_excersize_id,session_no,week,day} = req.body
+
+  try {
+
+    let currentUserPlan = await weekExcersize.findOne({user:req.user._id,_id:week_excersize_id,week:week,day:day}).sort({createdAt:1})
+    let mainPlan = await weekExcersize.findOne({user:null,week:week,day:day}).sort({createdAt:1})
+    let excersizes = await excersizeModel.find({session_no:session_no}).select({_id:1})
+    currentUserPlan.excersize.forEach((element,index) => {
+      // console.log(currentUserPlan.excersize[index].excersize ,  excersizes[index]._id )
+            currentUserPlan.excersize[index].excersize =  excersizes[index]._id 
+    });
+    mainPlan.excersize.forEach((element,index) => {
+      // console.log(mainPlan.excersize[index].excersize ,  excersizes[index]._id )
+            mainPlan.excersize[index].excersize =  excersizes[index]._id 
+    });
+
+
+    currentUserPlan.save()
+    mainPlan.save()
+
+    
+// console.log(mainPlan.plan)
+
+
+    // let currenPlan = await weekExcersize.findOne({user:null}).populate("excersize.excersize").sort({createdAt:1})
+    // let weekexcersizes = await weekExcersize.findOne({user:null}).populate("excersize.excersize").sort({createdAt:1})
+
+      if (!mainPlan) {
+          return res
+              .status(400)
+              .json({ message: 'no  plan Found' });
+      }
+    
+    
+      res.status(200).json({
+          message: "Plan Updated Successfully",
+          currentUserPlan:currentUserPlan,
+          mainPlan: mainPlan,
+          excersizes:excersizes
+         
+      });
+  } catch (err) {
+    
+     
+          const errors =[]
+          errors.push({message : err.message}) 
+          res.status(500).json({ errors: errors });
+      
+  }
+}
 
  
 exports.GET_ALL_LEFT_OVER_EXCERSIZES =  async (req, res) => {
@@ -418,7 +477,7 @@ exports.MARK_WEEK_EXCERSIZE_COMPLETE =  async (req, res) => {
 exports.GET_BASIC_PLAN = async (req, res) => {
     
       try {
-        let weekexcersizes = await weekExcersize.find({user :null}).populate("excersize.excersize").sort({createdAt:1})
+        let weekexcersizes = await weekExcersize.find({user :null,  is_off:false}).populate("excersize.excersize").sort({createdAt:1})
         const url =   baseUrl(req)  
         // console.log(weekexcersizes)
         let weekexcersizesCount = await weekExcersize.find({user :null})
@@ -443,56 +502,6 @@ exports.GET_BASIC_PLAN = async (req, res) => {
 
 
   
-exports.UPDATE_PLAN =async (req, res) => {
-
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-      res.status(400).json({ errors: errors.array() });
-  }
-
-
-  const {
-    username,
-    city,
-    country,
-    state,
-    zip_code,
-    address ,
-    phone_no
-
-  } = req.body;
-
-
-  try {
-
-    let weekexcersizes = await weekExcersize.findOne({_id:req.user._id}).populate("excersize.excersize").sort({createdAt:1})
-
-      // console.log(user)
-      if (!user) {
-          return res
-              .status(400)
-              .json({ message: 'no  plan Found' });
-      }
-      // user.username = username
-
-          // await user.save();
-      const url =   baseUrl(req)  
-      user.image = `${url}${user.image}`
-      const resuser = user
-      res.status(200).json({
-          message: "User Profile Updated Successfully",
-          user: resuser
-      });
-  } catch (err) {
-    
-     
-          const errors =[]
-          errors.push({message : err.message}) 
-          res.status(500).json({ errors: errors });
-      
-  }
-}
-
 
 
 

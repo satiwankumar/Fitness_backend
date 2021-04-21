@@ -236,6 +236,7 @@ exports.ForgotPassword = async (req, res) => {
         res.status(500).json({ errors: errors });
     }
 }
+
 exports.VerifyCode = (req, res) => {
 
     let error = []
@@ -278,6 +279,7 @@ exports.VerifyCode = (req, res) => {
     // Validate password Input
 
 }
+
 exports.ResetPassword = (req, res) => {
     // Validate password Input
     const errors = validationResult(req);
@@ -335,6 +337,7 @@ exports.ResetPassword = (req, res) => {
 
     });
 }
+
 exports.ChangePassword = async (req, res) => {
     let error = []
 
@@ -397,6 +400,7 @@ exports.ChangePassword = async (req, res) => {
     //return json webtoken
 }
 
+
 exports.Logout = async (req, res) => {
     try {
 
@@ -413,6 +417,7 @@ exports.Logout = async (req, res) => {
 
 
 }
+
 exports.LoadUser = async (req, res) => {
     try {
         console.log(req.user)

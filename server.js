@@ -1,7 +1,7 @@
 const express = require('express')
 const app = express()
 const path  = require('path')
-const port  = process.env.port || 5000
+const port  = process.env.Port || 5000
 const connectDB = require('./config/db')
 var cors = require('cors');
 var multipart = require('connect-multiparty');
