@@ -25,14 +25,14 @@ exports.Register = async (req, res, next) => {
         // if user duplicated
         let user = await User.findOne({ email: req.body.email.toLowerCase() })
         if (user) {
-            error.push({ message: "User already registered" })
+            error.push({ msg: "User already registered" })
             return res.status(400).json({ errors: error }
             )
         }
 
         //if password doesnot match
         // if (req.body.password !== req.body.confirmpassword) {
-        //     error.push({ message: "confirm password doesnot match" })
+        //     error.push({ msg: "confirm password doesnot match" })
         //     return res.status(400).json({ errors: error })
         // }
 
@@ -95,7 +95,7 @@ exports.Register = async (req, res, next) => {
 
      
         res.status(200).json({
-            message: "Registration Success, please login to proceed",
+            msg: "Registration Success, please login to proceed",
             token: token,
             createdUser: user,
              
@@ -128,7 +128,7 @@ exports.GetUsers  = async (req, res) => {
         if (!users.length) {
             return res
                 .status(400)
-                .json({ message: 'no user exist' });
+                .json({ msg: 'no user exist' });
         }
         const url =   baseUrl(req)  
         users.forEach(user=>
@@ -175,7 +175,7 @@ exports.EditProfile  =  async (req, res) => {
         if (!user) {
             return res
                 .status(400)
-                .json({ message: 'no  User Found' });
+                .json({ msg: 'no  User Found' });
         }
         user.username = username
         user.city=city?city:user.city,
@@ -189,7 +189,7 @@ exports.EditProfile  =  async (req, res) => {
         user.image = `${url}${user.image}`
         const resuser = user
         res.status(200).json({
-            message: "Profile Updated Successfully",
+            msg: "Profile Updated Successfully",
             user: resuser
         });
     } catch (err) {
@@ -209,7 +209,7 @@ exports.GetCurrentUser = async (req, res) => {
         if (!user) {
             return res
                 .status(400)
-                .json({ message: 'User doesnot exist' });
+                .json({ msg: 'User doesnot exist' });
         }
             const url =   baseUrl(req)  
            user.image = `${url}${user.image}`
@@ -257,15 +257,15 @@ exports.ApproveAndBlockUser = async (req, res) => {
     let user = await User.findOne({ _id: req.body.userId });
           // console.log(user)
     if (!user)
-     { return res.status(400).json({ message: 'no user exist ' });}
+     { return res.status(400).json({ msg: 'no user exist ' });}
   
 
      if (status == 1 && user.status == 1 ) {
-      return res.json({ message: 'This user is  already active ' });
+      return res.json({ msg: 'This user is  already active ' });
     }
 
     else if (status == 0 && user.status == 0) {
-      return res.json({ message: 'This user is already blocked' });
+      return res.json({ msg: 'This user is already blocked' });
     }
  
 
@@ -275,17 +275,17 @@ exports.ApproveAndBlockUser = async (req, res) => {
     
       user.status = status;
       await user.save();
-      return res.status(200).json({ message: 'User is  Active' });
+      return res.status(200).json({ msg: 'User is  Active' });
     }
      if (user.status == 1 && status == 0  ) {
       user.status = status;
       await user.save();
-      return res.status(200).json({ message:  'User is blocked' });
+      return res.status(200).json({ msg:  'User is blocked' });
     }
     
    
     else{
-      return res.status(200).json({ message: 'Invalid status' })
+      return res.status(200).json({ msg: 'Invalid status' })
     }
     
       
@@ -326,7 +326,7 @@ exports.UploadProfilePicture = async (req, res) => {
        user.image = pathName
         await user.save()
         res.status(200).json({
-            message: "profileImage Uploaded Successsfully"
+            msg: "profileImage Uploaded Successsfully"
         });
 
     } catch (error) {
@@ -381,14 +381,14 @@ exports.Update_User =async (req, res) => {
         user.image = `${url}${user.image}`
         const resuser = user
         res.status(200).json({
-            message: "User Profile Updated Successfully",
+            msg: "User Profile Updated Successfully",
             user: resuser
         });
     } catch (err) {
       
        
             const errors =[]
-            errors.push({message : err.message}) 
+            errors.push({msg : err.message}) 
             res.status(500).json({ errors: errors });
         
     }

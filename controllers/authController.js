@@ -47,7 +47,7 @@ exports.Login = async (req, res) => {
 
                     await session.save()
                     return res.status(200).json({
-                        "message": "Log in Successfull",
+                        "msg": "Log in Successfull",
                         "userId": user.id,
                         "token": token
 
@@ -93,7 +93,7 @@ exports.Login = async (req, res) => {
 
 
                 return res.status(200).json({
-                    "message": "Log in Successfull",
+                    "msg": "Log in Successfull",
                     "userId": user.id,
                     "token": token
 
@@ -113,13 +113,13 @@ exports.Login = async (req, res) => {
             let user = await User.findOne({ email });
 
             if (!user) {
-                error.push({ message: "Invalid Credentials" })
+                error.push({ msg: "Invalid Credentials" })
                 return res.status(400).json({ errors: error });
             }
 
             const validpassword = await bcrypt.compare(password, user.password)
             if (!validpassword) {
-                error.push({ message: "Invalid Credentials" })
+                error.push({ msg: "Invalid Credentials" })
                 return res.status(400).json({ errors: error });
 
             }
@@ -147,7 +147,7 @@ exports.Login = async (req, res) => {
             user.image = `${url}${user.image}`
 
             res.status(200).json({
-                "message": "Log in Successfull",
+                "msg": "Log in Successfull",
                 "user": user,
                 "token": token
 
@@ -158,7 +158,7 @@ exports.Login = async (req, res) => {
 
 
         const errors = []
-        errors.push({ message: err.message })
+        errors.push({ msg: err.message })
         res.status(500).json({ errors: errors });
     }
 
@@ -175,10 +175,10 @@ exports.ForgotPassword = async (req, res) => {
 
         User.findOne({ email: req.body.email.toLowerCase() }, async function (err, user) {
             if (err) {
-                return res.status(500).json({ message: err.message });
+                return res.status(500).json({ msg: err.message });
             }
             if (!user)
-                return res.status(400).json({ message: "Invalid credentials." });
+                return res.status(400).json({ msg: "Invalid credentials." });
 
 
 
@@ -211,12 +211,12 @@ exports.ForgotPassword = async (req, res) => {
 
                 user.save(async function (err) {
                     if (err) {
-                        return res.status(500).json({ message: err.message });
+                        return res.status(500).json({ msg: err.message });
                     }
 
                     let resp = await sendEmail(user.email, code)
 
-                    return res.status(200).json({ message: 'password recovery code successfully sent to email.' });
+                    return res.status(200).json({ msg: 'password recovery code successfully sent to email.' });
 
 
 
@@ -252,11 +252,11 @@ exports.VerifyCode = (req, res) => {
         Token.findOne({ token: req.body.resetCode }, function (err, token) {
             // console.log(token)
             if (err) {
-                error.push({ message: err.message })
+                error.push({ msg: err.message })
                 return res.status(500).json({ errors: error });
             }
             if (!token) {
-                error.push({ message: "This code is not valid. OR Your code may have expired." })
+                error.push({ msg: "This code is not valid. OR Your code may have expired." })
                 return res.status(400).json({ errors: error });
             }
 
@@ -264,7 +264,7 @@ exports.VerifyCode = (req, res) => {
             if (token) {
 
                 return res.status(200).json({
-                    message: "Code verified successfully, please set your new password "
+                    msg: "Code verified successfully, please set your new password "
                 });
             }
 
@@ -273,7 +273,7 @@ exports.VerifyCode = (req, res) => {
     } catch (err) {
 
         const errors = []
-        errors.push({ message: err.message })
+        errors.push({ msg: err.message })
         res.status(500).json({ errors: errors });
     }
     // Validate password Input
@@ -292,11 +292,11 @@ exports.ResetPassword = (req, res) => {
     // Find a matching token
     Token.findOne({ token: req.params.token }, async function (err, token) {
         if (err) {
-            return res.status(500).json({ message: err.message });
+            return res.status(500).json({ msg: err.message });
         }
         if (!token)
             return res.status(400).json({
-                message: "This code is not valid. OR Your code may have expired."
+                msg: "This code is not valid. OR Your code may have expired."
             });
 
 
@@ -307,12 +307,12 @@ exports.ResetPassword = (req, res) => {
 
         //if currrent password and new password matches show  error
         const validpassword = await bcrypt.compare(newpassword, user.password)
-        if (validpassword) return res.status(400).json({ "message": "please type new password which is not used earlier" })
+        if (validpassword) return res.status(400).json({ "msg": "please type new password which is not used earlier" })
 
 
         //if password and confirm password matches
         if (newpassword !== confirmpassword) {
-            return res.status(400).json({ "message": "confirm password doesnot match" })
+            return res.status(400).json({ "msg": "confirm password doesnot match" })
         }
 
 
@@ -327,7 +327,7 @@ exports.ResetPassword = (req, res) => {
 
         await user.save()
         res.status(200).json({
-            "message": "password updated Successfully"
+            "msg": "password updated Successfully"
         })
 
 
@@ -360,21 +360,21 @@ exports.ChangePassword = async (req, res) => {
         //if password matches
         const validpassword = await bcrypt.compare(currentpassword, user.password)
         if (!validpassword) {
-            error.push({ message: "Invalid Credentials" })
+            error.push({ msg: "Invalid Credentials" })
             return res.status(400).json({ errors: error });
 
         }
 
         //if currrent password and new password matches
         if (currentpassword === newpassword) {
-            error.push({ message: "please type new password which is not used earlier" })
+            error.push({ msg: "please type new password which is not used earlier" })
             return res.status(400).json({ errors: error });
 
         }
 
         //if password and confirm password matches
         if (newpassword !== confirmpassword) {
-            error.push({ message: "confirm password doesnot match" })
+            error.push({ msg: "confirm password doesnot match" })
             return res.status(400).json({ errors: error });
 
         }
@@ -389,7 +389,7 @@ exports.ChangePassword = async (req, res) => {
 
         await user.save()
         res.status(200).json({
-            "message": "password updated Successfully"
+            "msg": "password updated Successfully"
         })
 
     } catch (err) {
@@ -410,9 +410,9 @@ exports.Logout = async (req, res) => {
             sessions.status = false,
             sessions.deviceId = null
         await sessions.save()
-        return res.status(200).send({ "message": "User logout Successfullly" })
+        return res.status(200).send({ "msg": "User logout Successfullly" })
     } catch (error) {
-        res.json({ "message": error.message })
+        res.json({ "msg": error.message })
     }
 
 
@@ -427,7 +427,7 @@ exports.LoadUser = async (req, res) => {
         if (!user) {
             return res
                 .status(400)
-                .json({ message: 'User doesnot exist' });
+                .json({ msg: 'User doesnot exist' });
         }
         const url = baseUrl(req)
         user.image = `${url}${user.image}`
