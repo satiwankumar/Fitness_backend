@@ -5,7 +5,7 @@ const { check, validationResult } = require('express-validator')
 
 
 
-const Contact = require('../models/Contact.model')
+const Contact = require('../models/contact.model')
 const admin = require('../middleware/adminMiddleware')
 const auth = require('../middleware/authMiddleware');
 const checkObjectId = require('../middleware/checkobjectId');
