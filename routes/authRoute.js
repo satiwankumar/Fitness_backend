@@ -11,7 +11,7 @@ const auth = require('../middleware/authMiddleware')
 const User = require('../models/User.model')
 //models
 const Token = require('../models/Token.model')
-const Session = require('../models/session.model')
+const Session = require('../models/Session.model')
 //services
 const { sendEmail } = require('../service/email')
 const Controller = require('../controllers/authController')
