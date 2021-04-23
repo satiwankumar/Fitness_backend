@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken')
 const config = require('config')
 
-const Session = require('../models/session.model')
+const Session = require('../models/Session.model')
 module.exports = async function (req, res, next) {
 
    
