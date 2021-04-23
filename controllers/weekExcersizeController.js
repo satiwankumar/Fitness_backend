@@ -414,6 +414,7 @@ exports.UPDATE_USER_EXCERSIZE_STATUS =  async (req, res) => {
       const weekexcersize = await weekExcersize.findOne({
         user: req.user._id,"excersize._id":excersize_id 
       }).populate("excersize.excersize")
+      const url =   baseUrl(req)  
     
       if (!weekexcersize) return res.status(400).json({ message: 'Week Excersize  not found' });
       
@@ -455,6 +456,7 @@ exports.MARK_WEEK_EXCERSIZE_COMPLETE =  async (req, res) => {
     //    let index = weekexcersize.excersize.findIndex(item=>item._id==excersize_id)
     //    weekexcersize.excersize[index].isCompleted=status
     //    weekexcersize.save()
+    const url =   baseUrl(req)  
         
        for(let i=0;i<weekexcersize.excersize.length;i++){
         if(weekexcersize.excersize[i].excersize!=null){
