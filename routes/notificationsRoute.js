@@ -7,7 +7,7 @@ const FCM = require('fcm-node')
 const config = require('config')
 const auth  = require('../middleware/authMiddleware')
 const admin  = require('../middleware/adminMiddleware');
-const Session = require('../models/session.model');
+const Session = require('../models/Session.model');
 const checkObjectId = require('../middleware/checkobjectId');
 const {SendPushNotification}  = require('../utils/Notification')
 

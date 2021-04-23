@@ -10,7 +10,7 @@ const path = require('path')
 const fs = require('fs')
 const User = require('../models/User.model')
 const Token = require('../models/Token.model')
-const Session = require('../models/session.model')
+const Session = require('../models/Session.model')
 //servicesf
 const { sendEmail } = require('../service/email')
 
