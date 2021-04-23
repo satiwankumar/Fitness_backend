@@ -36,7 +36,7 @@ app.get("/uploads/images/:name", (req, res) => {
  
 
 app.get('/',(req,res)=>{
-    res.send('apto Server Runing')
+    res.send('fitness Server Runing')
 })
 app.listen(port,()=>{
     console.log(`Server is running at the port ${port}`)
