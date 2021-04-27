@@ -408,7 +408,7 @@ console.log("currentWeek",currentweek)
 
 exports.UPDATE_USER_EXCERSIZE_STATUS =  async (req, res) => {
     
-    let {excersize_id,status} = req.body
+    let {excersize_id,status,sets_completed} = req.body
 
     try {
       const weekexcersize = await weekExcersize.findOne({
@@ -419,19 +419,23 @@ exports.UPDATE_USER_EXCERSIZE_STATUS =  async (req, res) => {
       if (!weekexcersize) return res.status(400).json({ message: 'Week Excersize  not found' });
       
        let index = weekexcersize.excersize.findIndex(item=>item._id==excersize_id)
-       weekexcersize.excersize[index].isCompleted=status
-      await weekexcersize.save()
-        
-       for(let i=0;i<weekexcersize.excersize.length;i++){
-        if(weekexcersize.excersize[i].excersize!=null){
-      weekexcersize.excersize[i].excersize.type_image = `${url}${ weekexcersize.excersize[i].excersize.type_image}`
-      weekexcersize.excersize[i].excersize.image = `${url}${ weekexcersize.excersize[i].excersize.image}`
-  }
+       console.log(weekexcersize.excersize[index].excersize.sets,sets_completed)
+       if(weekexcersize.excersize[index].excersize.sets==sets_completed){
+        weekexcersize.excersize[index].isCompleted=status
+        await weekexcersize.save()
+          
+         for(let i=0;i<weekexcersize.excersize.length;i++){
+          if(weekexcersize.excersize[i].excersize!=null){
+        weekexcersize.excersize[i].excersize.type_image = `${url}${ weekexcersize.excersize[i].excersize.type_image}`
+        weekexcersize.excersize[i].excersize.image = `${url}${ weekexcersize.excersize[i].excersize.image}`
     }
+      }
+       }
+    
    
 
 
-      return res.json(weekexcersize);
+      return res.json(weekexcersize)
     } catch (err) {
       console.error(err.message);
       return res.status(500).json({ error: err.message });
