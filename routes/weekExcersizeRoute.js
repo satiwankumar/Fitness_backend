@@ -42,6 +42,9 @@ router.post("/status",
     auth,
     check("excersize_id", "excersize_id is required").not().isEmpty(),
     check("status", "status is required").not().isEmpty(),
+    check("sets_completed", "sets_completed is required").not().isEmpty(),
+    
+    
   ],
   WeekExcersizeController.UPDATE_USER_EXCERSIZE_STATUS
 );
@@ -55,6 +58,8 @@ router.post("/complete",
     auth,
     check("week_excersize_id", "week_excersize_id is required").not().isEmpty(),
     check("status", "status is required").not().isEmpty(),
+    
+
   ],
   WeekExcersizeController.MARK_WEEK_EXCERSIZE_COMPLETE
 );
