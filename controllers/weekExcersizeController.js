@@ -146,7 +146,7 @@ exports.GET_ALL_LEFT_OVER_EXCERSIZES =  async (req, res) => {
       const url =   baseUrl(req)  
       
 
-      if (!weekexcersize.length) return res.status(400).json({ message: 'Week Excersize  not found' });
+      if (!weekexcersize.length) return res.status(200).json([]);
       
       for(let i=0;i<weekexcersize.length;i++){
         for(let j=0;j<weekexcersize[i].excersize.length;j++){          
