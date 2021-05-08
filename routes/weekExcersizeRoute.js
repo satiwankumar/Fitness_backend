@@ -71,7 +71,7 @@ router.post("/complete",
 //get basic plan
 router.get(
   "/plan",
-  [auth,admin],
+  [auth],
   WeekExcersizeController.GET_BASIC_PLAN
 );
 

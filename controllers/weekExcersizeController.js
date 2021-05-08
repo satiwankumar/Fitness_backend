@@ -385,7 +385,8 @@ console.log("currentWeek",currentweek)
        week:{$lte:currentweek},
         user: user_id,
         is_off:false
-      }).populate("excersize.excersize").sort({createdAt:1})
+      }).populate("excersize.excersize").lean().sort({createdAt:1})
+
       const url =   baseUrl(req)  
       // console.log(weekexcersizes)
 
@@ -393,6 +394,10 @@ console.log("currentWeek",currentweek)
       for(let i=0;i<weekexcersizes.length;i++){
         for(let j=0;j<weekexcersizes[i].excersize.length;j++){          
             if(weekexcersizes[i].excersize[j].excersize!=null){
+             if(j==0){
+             console.log(weekexcersizes[i].excersize[0].excersize.session_no)
+             weekexcersizes[i].session_no = weekexcersizes[i].excersize[0].excersize.session_no
+             }
         weekexcersizes[i].excersize[j].excersize.type_image = `${url}${ weekexcersizes[i].excersize[j].excersize.type_image}`
         weekexcersizes[i].excersize[j].excersize.image = `${url}${ weekexcersizes[i].excersize[j].excersize.image}`
             }
