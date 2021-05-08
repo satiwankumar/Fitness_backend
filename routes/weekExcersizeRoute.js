@@ -25,7 +25,7 @@ router.post("/planupdate",[auth,
   check("week_excersize_id", "week_excersize_id is required").not().isEmpty(),
   check("week", "week is required").not().isEmpty(),
   check("day", "day is required").not().isEmpty(),
-  check("status", "status is required").not().isEmpty(),], 
+],
   WeekExcersizeController.UPDATE_PLAN);
 
 
