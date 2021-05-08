@@ -44,20 +44,20 @@ const {week_excersize_id,session_no,week,day} = req.body
   try {
 
     let currentUserPlan = await weekExcersize.findOne({user:req.user._id,_id:week_excersize_id,week:week,day:day}).sort({createdAt:1})
-    let mainPlan = await weekExcersize.findOne({user:null,week:week,day:day}).sort({createdAt:1})
+    // let mainPlan = await weekExcersize.findOne({user:null,week:week,day:day}).sort({createdAt:1})
     let excersizes = await excersizeModel.find({session_no:session_no}).select({_id:1})
     currentUserPlan.excersize.forEach((element,index) => {
       // console.log(currentUserPlan.excersize[index].excersize ,  excersizes[index]._id )
             currentUserPlan.excersize[index].excersize =  excersizes[index]._id 
     });
-    mainPlan.excersize.forEach((element,index) => {
-      // console.log(mainPlan.excersize[index].excersize ,  excersizes[index]._id )
-            mainPlan.excersize[index].excersize =  excersizes[index]._id 
-    });
+    // mainPlan.excersize.forEach((element,index) => {
+    //   // console.log(mainPlan.excersize[index].excersize ,  excersizes[index]._id )
+    //         mainPlan.excersize[index].excersize =  excersizes[index]._id 
+    // });
 
 
     currentUserPlan.save()
-    mainPlan.save()
+    // mainPlan.save()
 
     
 // console.log(mainPlan.plan)
@@ -66,18 +66,18 @@ const {week_excersize_id,session_no,week,day} = req.body
     // let currenPlan = await weekExcersize.findOne({user:null}).populate("excersize.excersize").sort({createdAt:1})
     // let weekexcersizes = await weekExcersize.findOne({user:null}).populate("excersize.excersize").sort({createdAt:1})
 
-      if (!mainPlan) {
-          return res
-              .status(400)
-              .json({ message: 'no  plan Found' });
-      }
+      // if (!mainPlan) {
+      //     return res
+      //         .status(400)
+      //         .json({ message: 'no  plan Found' });
+      // }
     
     
       res.status(200).json({
           message: "Plan Updated Successfully",
           currentUserPlan:currentUserPlan,
-          mainPlan: mainPlan,
-          excersizes:excersizes
+          // mainPlan: mainPlan,
+          // excersizes:excersizes
          
       });
   } catch (err) {
