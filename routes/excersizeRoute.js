@@ -28,6 +28,15 @@ const excersizeModel = require("../models/excersize.model");
 
 router.get('/', [auth], ExcersizeController.GET_EXCERSIZES);
 
+// @route Get api/excersizes/session (localhost:5000/api/excersizes/session)
+// @desc to getallexcersize 
+// access Private
+
+
+router.get('/sessions', [auth], ExcersizeController.GET_TOTAL_SESSIONS);
+
+
+
 
 
 // @route Post api/excersizes:excersize_id 

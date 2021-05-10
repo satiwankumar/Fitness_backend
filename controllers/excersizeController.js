@@ -134,4 +134,26 @@ exports.GET_EXCERISZE_DETAIL_BY_ID =  async (req, res) => {
     }
   }
 
+exports.GET_TOTAL_SESSIONS = async (req,res)=>{
+    try {
+        const excersize = await excersizeModel.find({
+        }).select('session_no')
+  
+        if (!excersize.length) return res.status(200).json([]);
+        let sessions = []        
+       excersize.map((item)=>{
+            if(!sessions.includes(parseInt(item.session_no))){
+                sessions.push(parseInt(item.session_no))
+
+            }   
+        })
+      
+  
+        return res.json(sessions);
+      } catch (err) {
+        console.error(err.message);
+        return res.status(500).json({ error: err.message });
+      }
+    }  
+
 
